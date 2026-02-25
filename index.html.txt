@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ODIJO Divine Enterprise</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>ODIJO Divine Enterprise</h1>
+    <p>Fresh • Affordable • Delicious</p>
+</header>
+
+<div class="container">
+
+    <h2>ODIJO BITE POINT</h2>
+    <img src="images/bitepoint.png" alt="Bite Point" class="main-image">
+
+    <h3>Our Products</h3>
+
+    <div class="product">
+        <h4>Chips</h4>
+        <p>Ksh 150</p>
+        <button onclick="addToCart('Chips',150)">Add to Cart</button>
+    </div>
+
+    <div class="product">
+        <h4>Samosa</h4>
+        <p>Ksh 30</p>
+        <button onclick="addToCart('Samosa',30)">Add to Cart</button>
+    </div>
+
+    <div class="product">
+        <h4>Bhajia</h4>
+        <p>Ksh 100</p>
+        <button onclick="addToCart('Bhajia',100)">Add to Cart</button>
+    </div>
+
+    <div class="product">
+        <h4>Soda</h4>
+        <p>Ksh 50</p>
+        <button onclick="addToCart('Soda',50)">Add to Cart</button>
+    </div>
+
+</div>
+
+<footer>
+© 2026 ODIJO Divine Enterprise | Developed by Joshua Otieno
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
