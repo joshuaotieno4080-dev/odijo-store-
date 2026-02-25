@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>ODIJO Divine Enterprise</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,41 +12,40 @@
     <p>Fresh • Affordable • Delicious</p>
 </header>
 
-<div class="container">
+<section class="products">
 
-    <h2>ODIJO BITE POINT</h2>
-    <img src="images/bitepoint.png" alt="Bite Point" class="main-image">
-
-    <h3>Our Products</h3>
-
-    <div class="product">
-        <h4>Chips</h4>
+    <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1585238342024-78d387f4a707" alt="Chips">
+        <h3>Chips</h3>
         <p>Ksh 150</p>
-        <button onclick="addToCart('Chips',150)">Add to Cart</button>
+        <button onclick="orderNow('Chips')">Order Now</button>
     </div>
 
-    <div class="product">
-        <h4>Samosa</h4>
+    <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d" alt="Samosa">
+        <h3>Samosa</h3>
         <p>Ksh 30</p>
-        <button onclick="addToCart('Samosa',30)">Add to Cart</button>
+        <button onclick="orderNow('Samosa')">Order Now</button>
     </div>
 
-    <div class="product">
-        <h4>Bhajia</h4>
+    <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1604909053191-3adbe9b7c5a2" alt="Bhajia">
+        <h3>Bhajia</h3>
         <p>Ksh 100</p>
-        <button onclick="addToCart('Bhajia',100)">Add to Cart</button>
+        <button onclick="orderNow('Bhajia')">Order Now</button>
     </div>
 
-    <div class="product">
-        <h4>Soda</h4>
+    <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1581636625402-29b2a704ef13" alt="Soda">
+        <h3>Soda</h3>
         <p>Ksh 50</p>
-        <button onclick="addToCart('Soda',50)">Add to Cart</button>
+        <button onclick="orderNow('Soda')">Order Now</button>
     </div>
 
-</div>
+</section>
 
 <footer>
-© 2026 ODIJO Divine Enterprise | Developed by Joshua Otieno
+    © 2026 ODIJO Divine Enterprise | Developed by Joshua Otieno
 </footer>
 
 <script src="script.js"></script>
