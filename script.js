@@ -1,4 +1,7 @@
+document.addEventListener("DOMContentLoaded", function(){
+
 const content = document.getElementById("content");
+const orderCount = document.getElementById("orderCount");
 
 let products = JSON.parse(localStorage.getItem("products")) || [];
 let orders = JSON.parse(localStorage.getItem("orders")) || [];
@@ -10,10 +13,10 @@ function saveData(){
 }
 
 function updateOrderCount(){
-    document.getElementById("orderCount").innerText = orders.length;
+    orderCount.innerText = orders.length;
 }
 
-function showHome(){
+window.showHome = function(){
     content.innerHTML = `
         <h2>Welcome to ODIJO Store</h2>
         <p>Add products in Admin section.</p>
@@ -21,7 +24,7 @@ function showHome(){
     `;
 }
 
-function showAdmin(){
+window.showAdmin = function(){
     content.innerHTML = `
         <h2>Add Product</h2>
         <input type="text" id="pname" placeholder="Product Name"><br><br>
@@ -31,10 +34,15 @@ function showAdmin(){
     `;
 }
 
-function addProduct(){
+window.addProduct = function(){
     const name = document.getElementById("pname").value;
     const price = document.getElementById("pprice").value;
     const file = document.getElementById("pimage").files[0];
+
+    if(!file){
+        alert("Please select an image");
+        return;
+    }
 
     const reader = new FileReader();
     reader.onload = function(){
@@ -49,7 +57,7 @@ function addProduct(){
     reader.readAsDataURL(file);
 }
 
-function showShop(){
+window.showShop = function(){
     let html = "<h2>Shop</h2><div class='products'>";
     products.forEach((p, index) => {
         html += `
@@ -65,9 +73,14 @@ function showShop(){
     content.innerHTML = html;
 }
 
-function orderProduct(index){
+window.orderProduct = function(index){
     const customer = prompt("Enter your name:");
     const phone = prompt("Enter your phone number:");
+
+    if(!customer || !phone){
+        alert("Name and phone required");
+        return;
+    }
 
     orders.push({
         product: products[index].name,
@@ -79,7 +92,7 @@ function orderProduct(index){
     alert("Order Placed Successfully!");
 }
 
-function showOrders(){
+window.showOrders = function(){
     let html = "<h2>Orders</h2>";
     orders.forEach(o => {
         html += `
@@ -95,3 +108,5 @@ function showOrders(){
 
 updateOrderCount();
 showHome();
+
+});
