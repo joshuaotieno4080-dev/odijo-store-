@@ -1,4 +1,3 @@
-
 const content = document.getElementById("content");
 
 let products = JSON.parse(localStorage.getItem("products")) || [];
