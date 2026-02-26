@@ -7,138 +7,25 @@
 </head>
 <body>
 
-<header>
-    <h1>ODIJO Divine Enterprise</h1>
-    <p>Food & Fashion Under One Brand</p>
-</header>
+<div class="sidebar">
+    <h2>ODIJO</h2>
+    <button onclick="showHome()">Home</button>
+    <button onclick="showCategory('bite')">Bite Point</button>
+    <button onclick="showCategory('nguo')">Nguo</button>
+</div>
 
-<!-- NAVIGATION -->
-<nav>
-    <a href="#bite">Bite Point</a>
-    <a href="#clothes">Clothing Store</a>
-</nav>
+<div class="main">
 
-<!-- ================= BITE POINT SECTION ================= -->
+    <header>
+        <h1>ODIJO Divine Enterprise</h1>
+        <p>Your One Stop Shop for Snacks & Fashion</p>
+    </header>
 
-<section id="bite">
-    <h2>🍟 ODIJO BITE POINT</h2>
-
-    <div class="products">
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1585238342024-78d387f4a707" alt="">
-            <h3>Chips</h3>
-            <p>Ksh 150</p>
-            <button onclick="orderNow('Chips')">Order Now</button>
-        </div>
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d" alt="">
-            <h3>Samosa</h3>
-            <p>Ksh 30</p>
-            <button onclick="orderNow('Samosa')">Order Now</button>
-        </div>
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1604909053191-3adbe9b7c5a2" alt="">
-            <h3>Bhajia</h3>
-            <p>Ksh 100</p>
-            <button onclick="orderNow('Bhajia')">Order Now</button>
-        </div>
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1581636625402-29b2a704ef13" alt="">
-            <h3>Soda</h3>
-            <p>Ksh 50</p>
-            <button onclick="orderNow('Soda')">Order Now</button>
-        </div>
-
+    <div id="content">
+        <!-- Dynamic content loads here -->
     </div>
-</section>
 
-<!-- ================= CLOTHING SECTION ================= -->
-
-<section id="clothes">
-    <h2>👕 ODIJO FASHION STORE</h2>
-
-    <div class="products">
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab" alt="">
-            <h3>Men Shirts</h3>
-            <p>Ksh 230</p>
-            <button onclick="orderNow('Men Shirts')">Order Now</button>
-        </div>
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1485968579580-b6d095142e6e" alt="">
-            <h3>Ladies Tops</h3>
-            <p>Ksh 150</p>
-            <button onclick="orderNow('Ladies Tops')">Order Now</button>
-        </div>
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1583003149588-dbe0bce3c7b5" alt="">
-            <h3>Sweatpants</h3>
-            <p>Ksh 300</p>
-            <button onclick="orderNow('Sweatpants')">Order Now</button>
-        </div>
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb" alt="">
-            <h3>Jeans</h3>
-            <p>Ksh 1100</p>
-            <button onclick="orderNow('Jeans')">Order Now</button>
-        </div>
-
-        <div class="card">
-            <h3>Official Dresses</h3>
-            <p>Ksh 600</p>
-            <button onclick="orderNow('Official Dresses')">Order Now</button>
-        </div>
-
-        <div class="card">
-            <h3>Dresses 👗</h3>
-            <p>Ksh 450</p>
-            <button onclick="orderNow('Dresses')">Order Now</button>
-        </div>
-
-        <div class="card">
-            <h3>Slim Girl</h3>
-            <p>Ksh 750</p>
-            <button onclick="orderNow('Slim Girl')">Order Now</button>
-        </div>
-
-        <div class="card">
-            <h3>Sundress</h3>
-            <p>Ksh 550</p>
-            <button onclick="orderNow('Sundress')">Order Now</button>
-        </div>
-
-        <div class="card">
-            <h3>Khaki</h3>
-            <p>Ksh 750</p>
-            <button onclick="orderNow('Khaki')">Order Now</button>
-        </div>
-
-        <div class="card">
-            <h3>Pallazo Pants</h3>
-            <p>Ksh 600</p>
-            <button onclick="orderNow('Pallazo Pants')">Order Now</button>
-        </div>
-
-        <div class="card">
-            <h3>Official Shirts</h3>
-            <p>Ksh 300</p>
-            <button onclick="orderNow('Official Shirts')">Order Now</button>
-        </div>
-
-    </div>
-</section>
-
-<footer>
-    © 2026 ODIJO Divine Enterprise | Joshua Otieno
-</footer>
+</div>
 
 <script src="script.js"></script>
 </body>
