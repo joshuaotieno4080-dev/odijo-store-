@@ -17,17 +17,13 @@ function updateOrderCount(){
     orderCount.innerText = orders.length;
 }
 
-/* ================= HOME ================= */
-
 window.showHome = function(){
     content.innerHTML = `
         <h2>Welcome to ODIJO Store</h2>
-        <p>Snacks & Fashion available at affordable prices.</p>
-        <button onclick="showShop()">Go To Shop</button>
+        <p>Affordable Snacks & Fashion available now.</p>
+        <button onclick="showShop()">Start Shopping</button>
     `;
 }
-
-/* ================= ADMIN LOGIN ================= */
 
 window.showAdmin = function(){
     const password = prompt("Enter Admin Password:");
@@ -45,7 +41,7 @@ window.showAdmin = function(){
         <input type="file" id="pimage"><br><br>
         <button onclick="addProduct()">Add Product</button>
 
-        <h3>Existing Products</h3>
+        <h3>Products</h3>
         <div id="adminProducts"></div>
     `;
 
@@ -70,7 +66,6 @@ window.addProduct = function(){
             image: reader.result
         });
         saveData();
-        alert("Product Added!");
         showAdmin();
     };
     reader.readAsDataURL(file);
@@ -96,8 +91,6 @@ window.deleteProduct = function(index){
     saveData();
     showAdmin();
 }
-
-/* ================= SHOP ================= */
 
 window.showShop = function(){
     let html = "<h2>Shop</h2><div class='products'>";
@@ -141,9 +134,7 @@ function renderCart(){
     });
 
     html += `<h4>Total: Ksh ${total}</h4>`;
-
-    const cartArea = document.getElementById("cartArea");
-    if(cartArea) cartArea.innerHTML = html;
+    document.getElementById("cartArea").innerHTML = html;
 }
 
 window.removeFromCart = function(index){
@@ -151,11 +142,9 @@ window.removeFromCart = function(index){
     renderCart();
 }
 
-/* ================= CHECKOUT ================= */
-
 window.checkout = function(){
     if(cart.length === 0){
-        alert("Cart is empty");
+        alert("Cart empty");
         return;
     }
 
@@ -177,15 +166,11 @@ window.checkout = function(){
 
     cart = [];
     saveData();
-    alert("Order placed successfully!");
     showShop();
 }
 
-/* ================= ORDERS ================= */
-
 window.showOrders = function(){
     let html = "<h2>Orders</h2>";
-
     orders.forEach(o => {
         html += `
             <div class="card">
@@ -195,7 +180,6 @@ window.showOrders = function(){
             </div>
         `;
     });
-
     content.innerHTML = html;
 }
 
