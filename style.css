@@ -1,4 +1,3 @@
-
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -12,45 +11,60 @@ header {
     padding: 20px;
 }
 
-.products {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px;
+nav {
+    background: #222;
+    text-align: center;
+    padding: 10px;
 }
 
-.product-card {
+nav a {
+    color: white;
+    margin: 15px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+section {
+    padding: 30px;
+}
+
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.card {
     background: white;
+    padding: 15px;
     border-radius: 10px;
     box-shadow: 0 5px 10px rgba(0,0,0,0.1);
     text-align: center;
-    padding: 15px;
-    transition: transform 0.3s;
+    transition: 0.3s;
 }
 
-.product-card:hover {
+.card:hover {
     transform: scale(1.05);
 }
 
-.product-card img {
+.card img {
     width: 100%;
     height: 180px;
     object-fit: cover;
     border-radius: 10px;
 }
 
-.product-card button {
+button {
     background: #b30000;
     color: white;
     border: none;
-    padding: 10px 15px;
+    padding: 10px;
     margin-top: 10px;
     cursor: pointer;
     border-radius: 5px;
-    font-weight: bold;
 }
 
-.product-card button:hover {
+button:hover {
     background: #800000;
 }
 
@@ -59,5 +73,4 @@ footer {
     color: white;
     text-align: center;
     padding: 15px;
-    margin-top: 20px;
 }
