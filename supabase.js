@@ -22,6 +22,6 @@ export async function deleteProduct(id) {
 export async function getProducts(category) {
   let query = supabase.from("products").select("*");
   if (category) query = query.eq("category", category);
-  const { data, error } = await query;
   return data;
 }
+
