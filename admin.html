@@ -1,1 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - ODIJO Enterprise</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module">
+    import { addProduct, deleteProduct, getProducts } from "./supabase.js";
+
+    const form = document.getElementById("addProductForm");
+    const productList = document.getElementById("productList");
+
+    async function loadProducts() {
+      const products = await getProducts();
+      productList.innerHTML = "";
+      products.forEach(p => {
+        productList.innerHTML += `
+          <div class="product">
+            <h3>${p.name} - ${p.price}</h3>
+            <button onclick="deleteProduct('${p.id}')">Delete</button>
+          </div>
+        `;
+      });
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      await addProduct(
+        document.getElementById("name").value,
+        document.getElementById("price").value,
+        document.getElementById("category").value,
+        document.getElementById("imageUrl").value
+      );
+      loadProducts();
+    });
+
+    loadProducts();
+  </script>
+</head>
+<body>
+  <h1>Admin Panel</h1>
+  <form id="addProductForm">
+    <input type="text" id="name" placeholder="Product Name" required>
+    <input type="number" id="price" placeholder="Price" required>
+    <input type="text" id="category" placeholder="Category" required>
+    <input type="text" id="imageUrl" placeholder="Image URL" required>
+    <button type="submit">Add Product</button>
+  </form>
+  <div id="productList"></div>
+</body>
+</html>
+
 
