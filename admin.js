@@ -1,35 +1,24 @@
 document.addEventListener("DOMContentLoaded", () => {
-
   const loginForm = document.getElementById("login-form");
   const adminPanel = document.getElementById("admin-panel");
   const form = document.getElementById("add-product-form");
   const container = document.getElementById("admin-products");
-  const logoutBtn = document.getElementById("logout-btn");
 
-  // Check session
-  db.auth.getSession().then(res => {
-    if (res.data.session) showAdminPanel();
-  });
+  const ADMIN_EMAIL = "admin@example.com";
+  const ADMIN_PASSWORD = "him1234";
 
-  // Login
-  loginForm.addEventListener("submit", async (e) => {
+  loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-
-    const { data, error } = await db.auth.signInWithPassword({ email, password });
-    if(error) return alert("Login failed: " + error.message);
-    showAdminPanel();
+    if(email === ADMIN_EMAIL && password === ADMIN_PASSWORD){
+      loginForm.style.display = "none";
+      adminPanel.style.display = "block";
+      loadProducts();
+    } else alert("Wrong credentials!");
   });
 
-  function showAdminPanel() {
-    loginForm.style.display = "none";
-    adminPanel.style.display = "block";
-    loadProducts();
-  }
-
-  logoutBtn.addEventListener("click", async () => {
-    await db.auth.signOut();
+  document.getElementById("logout-btn").addEventListener("click", () => {
     location.reload();
   });
 
@@ -64,11 +53,10 @@ document.addEventListener("DOMContentLoaded", () => {
     loadProducts();
   });
 
-  window.removeProduct = async function(id) {
-    if(confirm("Delete this product?")) {
+  window.removeProduct = async function(id){
+    if(confirm("Delete this product?")){
       await deleteProduct(id);
       loadProducts();
     }
-  }
-
+  };
 });
