@@ -6,8 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("admin-products");
 
   // --- Admin credentials ---
-  const ADMIN_EMAIL = "odijoadmin@gmail.com"; // change if you want
-  const ADMIN_PASSWORD = "admin1234";         // change if you want
+  const ADMIN_EMAIL = "odijoadmin@gmail.com"; // change if needed
+  const ADMIN_PASSWORD = "admin1234";         // change if needed
 
   // --- Login ---
   loginForm.addEventListener("submit", (e) => {
@@ -31,29 +31,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Load all products ---
   async function loadProducts() {
-    const products = await fetchProducts();
-    container.innerHTML = "";
-
-    products.forEach(product => {
-      container.innerHTML += `
-        <div class="admin-card">
-          <img src="${product.image}" alt="${product.name}">
-          <div>
-            <strong>${product.name}</strong>
-            <p>Ksh ${product.price}</p>
-            <small>${product.category}</small>
+    try {
+      const products = await fetchProducts();
+      container.innerHTML = "";
+      products.forEach(product => {
+        container.innerHTML += `
+          <div class="admin-card">
+            <img src="${product.image}" alt="${product.name}">
+            <div>
+              <strong>${product.name}</strong>
+              <p>Ksh ${product.price}</p>
+              <small>${product.category}</small>
+            </div>
+            <button onclick="removeProduct(${product.id})">Delete</button>
           </div>
-          <button onclick="removeProduct(${product.id})">Delete</button>
-        </div>
-      `;
-    });
+        `;
+      });
+    } catch(err) {
+      console.error("Error loading products:", err);
+      alert("Failed to load products. Check console.");
+    }
   }
 
   // --- Delete product ---
   window.removeProduct = async function(id){
-    if(confirm("Delete this product?")){
+    if(!confirm("Delete this product?")) return;
+    try {
       await deleteProduct(id);
       loadProducts();
+    } catch(err) {
+      console.error("Delete failed:", err);
+      alert("Failed to delete product. Check console.");
     }
   }
 
@@ -64,15 +72,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const name = document.getElementById("name").value.trim();
     const price = document.getElementById("price").value.trim();
     const category = document.getElementById("category").value;
-    const file = document.getElementById("image-file").files[0];
+    const fileInput = document.getElementById("image-file");
+    const file = fileInput.files[0];
 
-    if(!file) return alert("Please select an image.");
+    if(!name || !price || !category || !file){
+      return alert("Please fill all fields and select an image.");
+    }
 
     try {
       // Upload image to Supabase Storage (bucket: images)
+      const filePath = `images/${Date.now()}_${file.name}`;
       const { data: uploadData, error: uploadError } = await db.storage
         .from("images")
-        .upload(`images/${Date.now()}_${file.name}`, file);
+        .upload(filePath, file, { upsert: true });
 
       if(uploadError) throw uploadError;
 
@@ -82,20 +94,25 @@ document.addEventListener("DOMContentLoaded", () => {
         .getPublicUrl(uploadData.path);
 
       if(urlError) throw urlError;
+      if(!publicUrl) throw new Error("Could not get public URL");
+
+      // Debug log
+      console.log("Adding product:", { name, price, category, image: publicUrl });
 
       // Add product to database
-      await addProduct({
-        name,
-        price,
-        category,
-        image: publicUrl
-      });
+      const { error: insertError } = await db
+        .from("products")
+        .insert([{ name, price, category, image: publicUrl }]);
 
+      if(insertError) throw insertError;
+
+      alert("Product added successfully!");
       form.reset();
       loadProducts();
     } catch(err) {
-      alert("Error: " + err.message);
-      console.error(err);
+      console.error("Add product failed:", err);
+      alert("Failed to add product. Check console for details.");
     }
   });
+
 });
