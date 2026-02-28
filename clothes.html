@@ -2,46 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Clothes - ODIJO Enterprise</title>
+  <title>Clothes</title>
   <link rel="stylesheet" href="style.css">
-  <script type="module">
-    import { getProducts } from "./supabase.js";
-    import { orderProduct } from "./script.js";
-
-    async function loadProducts() {
-      const products = await getProducts("clothes");
-      const container = document.getElementById("products");
-      container.innerHTML = "";
-      products.forEach(p => {
-        container.innerHTML += `
-          <div class="product">
-            <img src="${p.imageUrl}" alt="${p.name}">
-            <h3>${p.name}</h3>
-            <p>Price: ${p.price}</p>
-            <button onclick="orderProduct('${p.name}', '${p.price}')">Order</button>
-          </div>
-        `;
-      });
-    }
-    loadProducts();
-  </script>
+  <script src="supabase.js" defer></script>
+  <script src="script.js" defer></script>
 </head>
 <body>
-  <header>
-    <h1>ODIJO Enterprise</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="clothes.html">Clothes</a>
-      <a href="shoes.html">Shoes</a>
-      <a href="bitepoint.html">Bite Point</a>
-      <a href="admin.html">Admin</a>
-    </nav>
-  </header>
-  <section>
-    <h2>Clothes</h2>
-    <div id="products" class="products"></div>
-  </section>
+  <h1>Clothes</h1>
+  <div id="product-grid"></div>
+  <footer>
+    <p>© 2024 Geoddfrey Odijo — Developed by Joshua Otieno</p>
+  </footer>
 </body>
 </html>
-
-
