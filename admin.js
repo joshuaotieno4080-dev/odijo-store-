@@ -1,15 +1,13 @@
-// admin.js
 document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.getElementById("login-form");
   const adminPanel = document.getElementById("admin-panel");
   const form = document.getElementById("add-product-form");
   const container = document.getElementById("admin-products");
 
-  // --- Admin credentials ---
-  const ADMIN_EMAIL = "odijoadmin@gmail.com"; // change if needed
-  const ADMIN_PASSWORD = "admin1234";         // change if needed
+  const ADMIN_EMAIL = "odijoadmin@gmail.com";
+  const ADMIN_PASSWORD = "admin1234";
 
-  // --- Login ---
+  // Login
   loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const email = document.getElementById("email").value.trim();
@@ -24,12 +22,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // --- Logout ---
+  // Logout
   document.getElementById("logout-btn").addEventListener("click", () => {
     location.reload();
   });
 
-  // --- Load all products ---
+  // Load products
   async function loadProducts() {
     try {
       const products = await fetchProducts();
@@ -48,12 +46,11 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
       });
     } catch(err) {
-      console.error("Error loading products:", err);
-      alert("Failed to load products. Check console.");
+      console.error("Load products error:", err);
     }
   }
 
-  // --- Delete product ---
+  // Delete product
   window.removeProduct = async function(id){
     if(!confirm("Delete this product?")) return;
     try {
@@ -61,49 +58,38 @@ document.addEventListener("DOMContentLoaded", () => {
       loadProducts();
     } catch(err) {
       console.error("Delete failed:", err);
-      alert("Failed to delete product. Check console.");
     }
   }
 
-  // --- Add product with image upload ---
+  // Add product
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const name = document.getElementById("name").value.trim();
     const price = document.getElementById("price").value.trim();
     const category = document.getElementById("category").value;
-    const fileInput = document.getElementById("image-file");
-    const file = fileInput.files[0];
+    const file = document.getElementById("image-file").files[0];
 
-    if(!name || !price || !category || !file){
-      return alert("Please fill all fields and select an image.");
-    }
+    if(!name || !price || !category || !file) return alert("Fill all fields and select an image.");
 
     try {
-      // Upload image to Supabase Storage (bucket: images)
+      // Upload image
       const filePath = `images/${Date.now()}_${file.name}`;
       const { data: uploadData, error: uploadError } = await db.storage
         .from("images")
         .upload(filePath, file, { upsert: true });
-
       if(uploadError) throw uploadError;
 
       // Get public URL
       const { publicUrl, error: urlError } = db.storage
         .from("images")
         .getPublicUrl(uploadData.path);
+      if(urlError || !publicUrl) throw urlError || new Error("Cannot get public URL");
 
-      if(urlError) throw urlError;
-      if(!publicUrl) throw new Error("Could not get public URL");
-
-      // Debug log
-      console.log("Adding product:", { name, price, category, image: publicUrl });
-
-      // Add product to database
+      // Insert into products
       const { error: insertError } = await db
         .from("products")
         .insert([{ name, price, category, image: publicUrl }]);
-
       if(insertError) throw insertError;
 
       alert("Product added successfully!");
@@ -111,8 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
       loadProducts();
     } catch(err) {
       console.error("Add product failed:", err);
-      alert("Failed to add product. Check console for details.");
+      alert("Failed to add product. Check console.");
     }
   });
-
 });
