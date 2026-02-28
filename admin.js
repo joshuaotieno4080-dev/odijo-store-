@@ -1,34 +1,43 @@
+// admin.js
 document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.getElementById("login-form");
   const adminPanel = document.getElementById("admin-panel");
   const form = document.getElementById("add-product-form");
   const container = document.getElementById("admin-products");
 
-  const ADMIN_EMAIL = "admin@example.com";
-  const ADMIN_PASSWORD = "him1234";
+  // --- Admin credentials ---
+  const ADMIN_EMAIL = "odijoadmin@gmail.com"; // change if you want
+  const ADMIN_PASSWORD = "admin1234";         // change if you want
 
+  // --- Login ---
   loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+
     if(email === ADMIN_EMAIL && password === ADMIN_PASSWORD){
       loginForm.style.display = "none";
       adminPanel.style.display = "block";
       loadProducts();
-    } else alert("Wrong credentials!");
+    } else {
+      alert("Wrong credentials!");
+    }
   });
 
+  // --- Logout ---
   document.getElementById("logout-btn").addEventListener("click", () => {
     location.reload();
   });
 
+  // --- Load all products ---
   async function loadProducts() {
     const products = await fetchProducts();
     container.innerHTML = "";
+
     products.forEach(product => {
       container.innerHTML += `
         <div class="admin-card">
-          <img src="${product.image}">
+          <img src="${product.image}" alt="${product.name}">
           <div>
             <strong>${product.name}</strong>
             <p>Ksh ${product.price}</p>
@@ -40,23 +49,49 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const product = {
-      name: document.getElementById("name").value,
-      price: document.getElementById("price").value,
-      category: document.getElementById("category").value,
-      image: document.getElementById("image").value
-    };
-    await addProduct(product);
-    form.reset();
-    loadProducts();
-  });
-
+  // --- Delete product ---
   window.removeProduct = async function(id){
     if(confirm("Delete this product?")){
       await deleteProduct(id);
       loadProducts();
     }
-  };
+  }
+
+  // --- Add product with image upload ---
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const price = document.getElementById("price").value.trim();
+    const category = document.getElementById("category").value;
+    const file = document.getElementById("image-file").files[0];
+
+    if(!file) return alert("Please select an image.");
+
+    // Upload image to Supabase Storage
+    const { data: uploadData, error: uploadError } = await db.storage
+      .from("product-images")
+      .upload(`images/${Date.now()}_${file.name}`, file);
+
+    if(uploadError) return alert("Upload failed: " + uploadError.message);
+
+    // Get public URL
+    const { publicUrl, error: urlError } = db.storage
+      .from("product-images")
+      .getPublicUrl(uploadData.path);
+
+    if(urlError) return alert("Error getting URL: " + urlError.message);
+
+    // Add product to database
+    await addProduct({
+      name,
+      price,
+      category,
+      image: publicUrl
+    });
+
+    form.reset();
+    loadProducts();
+  });
+
 });
