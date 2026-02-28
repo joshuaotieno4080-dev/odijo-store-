@@ -14,45 +14,80 @@ body {
     background: #f4f4f4;
 }
 
-header {
-    background: linear-gradient(to right, #ff0000, #cc0000);
+/* HERO SECTION */
+.hero {
+    height: 60vh;
+    background: url('https://1drv.ms/i/c/328d062472c4a35c/IQDHOo3k6OoURYjk-l3eNqxqAQKg24PlNnUGuVOB7a1AEYc?e=jHD51o') center/cover no-repeat;
+    position: relative;
     color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    padding: 30px;
 }
 
-header h1 {
+.hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero h1 {
+    font-size: 50px;
     margin: 0;
-    font-size: 40px;
 }
 
-header h3 {
-    margin: 5px;
+.hero h3 {
     font-weight: normal;
 }
 
+/* CATEGORY CARDS */
 .categories {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
-    margin: 20px;
+    padding: 40px;
 }
 
-.categories button {
-    padding: 12px 25px;
-    border: none;
-    background: #ff0000;
-    color: white;
+.category-card {
+    position: relative;
+    height: 250px;
+    border-radius: 10px;
+    overflow: hidden;
     cursor: pointer;
-    font-weight: bold;
-    border-radius: 6px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
+.category-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.category-card span {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: rgba(255,0,0,0.8);
+    color: white;
+    padding: 15px;
+    font-size: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* PRODUCTS */
 .products {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
-    padding: 20px;
+    padding: 40px;
 }
 
 .card {
@@ -72,10 +107,6 @@ header h3 {
     padding: 15px;
 }
 
-.card h4 {
-    margin: 5px 0;
-}
-
 .price {
     color: red;
     font-weight: bold;
@@ -85,23 +116,38 @@ header h3 {
 
 <body>
 
-<header>
-    <h1>Odijo Enterprise</h1>
-    <h3>Admin</h3>
-</header>
-
-<div class="categories">
-    <button onclick="loadProducts('bitepoint')">Bite Point</button>
-    <button onclick="loadProducts('shoes')">Shoes</button>
-    <button onclick="loadProducts('clothes')">Clothes</button>
+<!-- HERO -->
+<div class="hero">
+    <div class="hero-content">
+        <h1>Odijo Enterprise</h1>
+        <h3>Admin</h3>
+    </div>
 </div>
 
+<!-- CATEGORIES -->
+<div class="categories">
+    <div class="category-card" onclick="loadProducts('bitepoint')">
+        <img src="https://1drv.ms/i/c/328d062472c4a35c/IQDHOo3k6OoURYjk-l3eNqxqAQKg24PlNnUGuVOB7a1AEYc?e=jHD51o">
+        <span>Bite Point</span>
+    </div>
+
+    <div class="category-card" onclick="loadProducts('shoes')">
+        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff">
+        <span>Shoes</span>
+    </div>
+
+    <div class="category-card" onclick="loadProducts('clothes')">
+        <img src="https://images.unsplash.com/photo-1520975922284-9c9cdd3b3d37">
+        <span>Clothes</span>
+    </div>
+</div>
+
+<!-- PRODUCTS -->
 <div class="products" id="products"></div>
 
 <script>
 const supabaseUrl = "https://hncxmcpsiocoidljoayq.supabase.co";
-const supabaseKey = "sb_publishable__I-5Xru31gg0n-4MSbpOjA_yLmbrqwGY";
-
+const supabaseKey = "sb_publishable__I-5Xru31gg0n-4MSbpOjA_yLmbrqwG";
 const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
 async function loadProducts(category) {
@@ -125,10 +171,7 @@ async function loadProducts(category) {
         `;
     });
 }
-
-loadProducts('bitepoint');
 </script>
 
 </body>
 </html>
-
