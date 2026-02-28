@@ -1,0 +1,96 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: #f4f6f9;
+}
+
+/* Login */
+.login-container {
+  width: 350px;
+  margin: 120px auto;
+  padding: 30px;
+  background: white;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  text-align: center;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 12px;
+  margin: 15px 0;
+}
+
+.login-container button {
+  width: 100%;
+  padding: 12px;
+  background: black;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+/* Dashboard */
+.dashboard header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 40px;
+  background: #111;
+  color: white;
+}
+
+.dashboard header button {
+  background: red;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  cursor: pointer;
+}
+
+.add-product, .product-list {
+  margin: 40px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.add-product input {
+  padding: 10px;
+  margin: 10px;
+  width: 22%;
+}
+
+.add-product button {
+  padding: 10px 20px;
+  background: green;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.product-card {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  margin-top: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.product-card img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+}
+
+.delete-btn {
+  background: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
