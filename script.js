@@ -1,8 +1,14 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const grid = document.getElementById("product-grid");
-  const products = await fetchProducts();
-  grid.innerHTML = "";
+  if(!grid) return;
 
+  const categoryElement = document.getElementById("category-name");
+  const category = categoryElement ? categoryElement.textContent : null;
+
+  let products = await fetchProducts();
+  if(category) products = products.filter(p => p.category === category);
+
+  grid.innerHTML = "";
   products.forEach(product => {
     grid.innerHTML += `
       <div class="card">
@@ -16,10 +22,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 async function orderProduct(name, price) {
-  await fetch("/functions/v1/send_whatsapp", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ product: name, price })
-  });
-  alert("Order received! Admin will be notified.");
+  const adminNumber = "254712345678"; // your WhatsApp number
+  const apiKey = "YOUR_API_KEY";      // CallMeBot API key
+  const message = `New order received:\nProduct: ${name}\nPrice: Ksh ${price}`;
+
+  const url = `https://api.callmebot.com/whatsapp.php?phone=${adminNumber}&text=${encodeURIComponent(message)}&apikey=${apiKey}`;
+
+  const resp = await fetch(url);
+  if(resp.ok) alert("Order received! Admin will be notified.");
+  else alert("Failed to notify admin.");
 }
