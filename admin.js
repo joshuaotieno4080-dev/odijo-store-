@@ -1,50 +1,87 @@
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
+document.addEventListener("DOMContentLoaded", () => {
 
-  const name = document.getElementById("name").value.trim();
-  const price = document.getElementById("price").value.trim();
-  const category = document.getElementById("category").value;
-  const file = document.getElementById("image-file").files[0];
+  const ADMIN_EMAIL = "admin@gmail.com";
+  const ADMIN_PASSWORD = "1234";
 
-  console.log("Fields:", { name, price, category, file });
+  const loginForm = document.getElementById("login-form");
+  const adminPanel = document.getElementById("admin-panel");
+  const form = document.getElementById("add-product-form");
+  const container = document.getElementById("admin-products");
 
-  if(!name || !price || !category || !file){
-    return alert("Fill all fields and select an image.");
+  // LOGIN
+  loginForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+      loginForm.style.display = "none";
+      adminPanel.style.display = "block";
+      loadProducts();
+    } else {
+      alert("Wrong login details");
+    }
+  });
+
+  // LOAD PRODUCTS
+  async function loadProducts() {
+    const products = await fetchProducts();
+    container.innerHTML = "";
+
+    products.forEach(p => {
+      container.innerHTML += `
+        <div>
+          <img src="${p.image}" width="80"/>
+          <p>${p.name}</p>
+          <p>Ksh ${p.price}</p>
+          <p>${p.category}</p>
+          <button onclick="removeProduct(${p.id})">Delete</button>
+          <hr/>
+        </div>
+      `;
+    });
   }
 
-  try {
-    // 1️⃣ Upload image
-    const filePath = `images/${Date.now()}_${Math.floor(Math.random()*1000)}_${file.name}`;
-    console.log("Uploading file to path:", filePath);
+  window.removeProduct = async function(id) {
+    await deleteProduct(id);
+    loadProducts();
+  }
 
-    const { data: uploadData, error: uploadError } = await db.storage
+  // ADD PRODUCT
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const price = document.getElementById("price").value;
+    const category = document.getElementById("category").value;
+    const file = document.getElementById("image-file").files[0];
+
+    if (!file) return alert("Select image");
+
+    const filePath = `${Date.now()}_${file.name}`;
+
+    const { data, error } = await db.storage
       .from("images")
-      .upload(filePath, file, { upsert: true });
-    if(uploadError) throw uploadError;
+      .upload(filePath, file);
 
-    console.log("UploadData:", uploadData);
+    if (error) return alert(error.message);
 
-    // 2️⃣ Get public URL
-    const { publicUrl, error: urlError } = db.storage
+    const { data: urlData } = db.storage
       .from("images")
-      .getPublicUrl(uploadData.path);
-    console.log("Public URL:", publicUrl, "Error:", urlError);
-    if(urlError || !publicUrl) throw urlError || new Error("Cannot get public URL");
+      .getPublicUrl(filePath);
 
-    // 3️⃣ Insert product
-    console.log("Inserting product:", { name, price, category, image: publicUrl });
-    const { data: insertData, error: insertError } = await db
+    const imageUrl = urlData.publicUrl;
+
+    const { error: insertError } = await db
       .from("products")
-      .insert([{ name, price, category, image: publicUrl }]);
-    console.log("Insert result:", insertData, "Error:", insertError);
-    if(insertError) throw insertError;
+      .insert([{ name, price, category, image: imageUrl }]);
 
-    alert("Product added successfully!");
+    if (insertError) return alert(insertError.message);
+
+    alert("Product added successfully");
     form.reset();
     loadProducts();
+  });
 
-  } catch(err) {
-    console.error("Add product failed:", err);
-    alert("Failed to add product. Check console for details.");
-  }
 });
