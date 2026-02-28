@@ -1,23 +1,25 @@
-// WhatsApp Order
-function orderProduct(name, price, category) {
-  const phone = "254700238274"; // Kenya format
-  const message = `Hello, I want to order:\nProduct: ${name}\nPrice: ${price}\nCategory: ${category}`;
-  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, "_blank");
-}
+document.addEventListener("DOMContentLoaded", async () => {
+  const grid = document.getElementById("product-grid");
+  const products = await fetchProducts();
+  grid.innerHTML = "";
 
-// Admin login
-document.addEventListener("DOMContentLoaded", () => {
-  const loginForm = document.getElementById("login-form");
-  if (loginForm) {
-    loginForm.addEventListener("submit", e => {
-      e.preventDefault();
-      const password = document.getElementById("password").value;
-      if (password === "1234") {
-        document.getElementById("admin-section").style.display = "block";
-        loginForm.style.display = "none";
-      } else {
-        alert("Wrong password!");
-      }
-    });
-  }
+  products.forEach(product => {
+    grid.innerHTML += `
+      <div class="card">
+        <img src="${product.image}" alt="${product.name}">
+        <h3>${product.name}</h3>
+        <p>Ksh ${product.price}</p>
+        <button onclick="orderProduct('${product.name}', ${product.price})">Order via WhatsApp</button>
+      </div>
+    `;
+  });
 });
+
+async function orderProduct(name, price) {
+  await fetch("/functions/v1/send_whatsapp", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ product: name, price })
+  });
+  alert("Order received! Admin will be notified.");
+}
