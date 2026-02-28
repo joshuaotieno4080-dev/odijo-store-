@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const ADMIN_EMAIL = "odijoadmin@gmail.com";
   const ADMIN_PASSWORD = "admin1234";
 
-  // Login
+  // --- Login ---
   loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const email = document.getElementById("email").value.trim();
@@ -22,12 +22,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Logout
+  // --- Logout ---
   document.getElementById("logout-btn").addEventListener("click", () => {
     location.reload();
   });
 
-  // Load products
+  // --- Load products ---
   async function loadProducts() {
     try {
       const products = await fetchProducts();
@@ -45,12 +45,13 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         `;
       });
+      console.log("Products loaded:", products);
     } catch(err) {
-      console.error("Load products error:", err);
+      console.error("Error loading products:", err);
     }
   }
 
-  // Delete product
+  // --- Delete product ---
   window.removeProduct = async function(id){
     if(!confirm("Delete this product?")) return;
     try {
@@ -61,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Add product
+  // --- Add product ---
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -70,15 +71,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const category = document.getElementById("category").value;
     const file = document.getElementById("image-file").files[0];
 
-    if(!name || !price || !category || !file) return alert("Fill all fields and select an image.");
+    if(!name || !price || !category || !file){
+      return alert("Fill all fields and select an image.");
+    }
 
     try {
-      // Upload image
-      const filePath = `images/${Date.now()}_${file.name}`;
+      console.log("Starting image upload...");
+
+      // Ensure unique file path
+      const filePath = `images/${Date.now()}_${Math.floor(Math.random()*1000)}_${file.name}`;
+      console.log("Uploading file to path:", filePath);
+
+      // Upload image to Supabase Storage
       const { data: uploadData, error: uploadError } = await db.storage
         .from("images")
         .upload(filePath, file, { upsert: true });
       if(uploadError) throw uploadError;
+
+      console.log("Upload successful:", uploadData);
 
       // Get public URL
       const { publicUrl, error: urlError } = db.storage
@@ -86,18 +96,22 @@ document.addEventListener("DOMContentLoaded", () => {
         .getPublicUrl(uploadData.path);
       if(urlError || !publicUrl) throw urlError || new Error("Cannot get public URL");
 
-      // Insert into products
-      const { error: insertError } = await db
+      console.log("Public URL:", publicUrl);
+
+      // Insert into products table
+      const { data: insertData, error: insertError } = await db
         .from("products")
         .insert([{ name, price, category, image: publicUrl }]);
       if(insertError) throw insertError;
 
+      console.log("Product inserted:", insertData);
       alert("Product added successfully!");
       form.reset();
       loadProducts();
+
     } catch(err) {
       console.error("Add product failed:", err);
-      alert("Failed to add product. Check console.");
+      alert("Failed to add product. Check console for details.");
     }
   });
 });
