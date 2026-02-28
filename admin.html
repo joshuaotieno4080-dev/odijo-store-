@@ -2,36 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Odijo Enterprise</title>
+  <title>Admin Panel</title>
   <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
   <script src="supabase.js" defer></script>
 </head>
 <body>
-  <!-- Hero Banner -->
-  <header class="hero">
-    <img src="bitepoint-banner.jpg" alt="Bite Point Banner" class="hero-img">
-    <div class="hero-text">
-      <h1>Bite Point & Odijo Enterprise</h1>
-      <p>Your One‑Stop Shop for Food, Clothes & Shoes</p>
-      <nav class="categories">
-        <a href="clothes.html">Clothes</a>
-        <a href="shoes.html">Shoes</a>
-        <a href="bitepoint.html">Bite Point</a>
-      </nav>
-    </div>
-  </header>
+  <h1>Admin Panel — Odijo Enterprise</h1>
+  <form id="login-form">
+    <input type="password" id="password" placeholder="Enter Admin Password">
+    <button type="submit">Login</button>
+  </form>
 
-  <!-- Product Highlights -->
-  <section id="highlights">
-    <h2>Featured Products</h2>
-    <div id="highlight-grid"></div>
-  </section>
+  <div id="admin-section" style="display:none;">
+    <h2>Welcome, Geoddfrey Odijo</h2>
+    <form id="add-product-form">
+      <input type="text" id="product-name" placeholder="Product Name" required>
+      <input type="text" id="product-price" placeholder="Price" required>
+      <input type="text" id="product-category" placeholder="Category" required>
+      <input type="text" id="product-image" placeholder="Image URL" required>
+      <button type="submit">Add Product</button>
+    </form>
 
-  <!-- Footer -->
-  <footer>
-    <p>© 2024 Geoddfrey Odijo — Developed by Joshua Otieno</p>
-  </footer>
+    <h3>Delete Product</h3>
+    <div id="delete-list"></div>
+  </div>
 </body>
 </html>
