@@ -1,36 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Odijo Enterprise</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase.js"></script>
-  <script src="script.js" defer></script>
-
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Odijo Enterprise</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="script.js" defer></script>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
+<nav>
+  <h2>Odijo Enterprise</h2>
+  <a href="admin.html">Admin</a>
+</nav>
 
-  <nav>
-    <h2>Odijo Enterprise</h2>
-    <a href="admin.html">Admin</a>
-  </nav>
+<h1 class="center">All Products</h1>
 
-  <h1 class="center">All Products</h1>
+<div class="categories">
+  <a href="shoes.html">Shoes</a>
+  <a href="bitepoint.html">Bitepoint</a>
+  <a href="clothes.html">Clothes</a>
+</div>
 
-  <div class="categories">
-    <a href="shoes.html">Shoes</a>
-    <a href="bitepoint.html">Bitepoint</a>
-    <a href="clothes.html">Clothes</a>
-  </div>
+<div id="product-grid"></div>
 
-  <div id="product-grid"></div>
-
-  <footer class="footer">
-    © Geoddfrey Odijo | Developed by Joshua Otieno
-  </footer>
-
+<footer class="footer">
+© Geoddfrey Odijo | Developed by Joshua Otieno
+</footer>
 </body>
 </html>
