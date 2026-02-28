@@ -2,52 +2,36 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin - ODIJO Enterprise</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Odijo Enterprise</title>
   <link rel="stylesheet" href="style.css">
-  <script type="module">
-    import { addProduct, deleteProduct, getProducts } from "./supabase.js";
-
-    const form = document.getElementById("addProductForm");
-    const productList = document.getElementById("productList");
-
-    async function loadProducts() {
-      const products = await getProducts();
-      productList.innerHTML = "";
-      products.forEach(p => {
-        productList.innerHTML += `
-          <div class="product">
-            <h3>${p.name} - ${p.price}</h3>
-            <button onclick="deleteProduct('${p.id}')">Delete</button>
-          </div>
-        `;
-      });
-    }
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      await addProduct(
-        document.getElementById("name").value,
-        document.getElementById("price").value,
-        document.getElementById("category").value,
-        document.getElementById("imageUrl").value
-      );
-      loadProducts();
-    });
-
-    loadProducts();
-  </script>
+  <script src="script.js" defer></script>
+  <script src="supabase.js" defer></script>
 </head>
 <body>
-  <h1>Admin Panel</h1>
-  <form id="addProductForm">
-    <input type="text" id="name" placeholder="Product Name" required>
-    <input type="number" id="price" placeholder="Price" required>
-    <input type="text" id="category" placeholder="Category" required>
-    <input type="text" id="imageUrl" placeholder="Image URL" required>
-    <button type="submit">Add Product</button>
-  </form>
-  <div id="productList"></div>
+  <!-- Hero Banner -->
+  <header class="hero">
+    <img src="bitepoint-banner.jpg" alt="Bite Point Banner" class="hero-img">
+    <div class="hero-text">
+      <h1>Bite Point & Odijo Enterprise</h1>
+      <p>Your One‑Stop Shop for Food, Clothes & Shoes</p>
+      <nav class="categories">
+        <a href="clothes.html">Clothes</a>
+        <a href="shoes.html">Shoes</a>
+        <a href="bitepoint.html">Bite Point</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Product Highlights -->
+  <section id="highlights">
+    <h2>Featured Products</h2>
+    <div id="highlight-grid"></div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2024 Geoddfrey Odijo — Developed by Joshua Otieno</p>
+  </footer>
 </body>
 </html>
-
-
