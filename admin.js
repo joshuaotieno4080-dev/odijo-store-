@@ -68,30 +68,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if(!file) return alert("Please select an image.");
 
-    // Upload image to Supabase Storage
-    const { data: uploadData, error: uploadError } = await db.storage
-      .from("product-images")
-      .upload(`images/${Date.now()}_${file.name}`, file);
+    try {
+      // Upload image to Supabase Storage (bucket: images)
+      const { data: uploadData, error: uploadError } = await db.storage
+        .from("images")
+        .upload(`images/${Date.now()}_${file.name}`, file);
 
-    if(uploadError) return alert("Upload failed: " + uploadError.message);
+      if(uploadError) throw uploadError;
 
-    // Get public URL
-    const { publicUrl, error: urlError } = db.storage
-      .from("product-images")
-      .getPublicUrl(uploadData.path);
+      // Get public URL
+      const { publicUrl, error: urlError } = db.storage
+        .from("images")
+        .getPublicUrl(uploadData.path);
 
-    if(urlError) return alert("Error getting URL: " + urlError.message);
+      if(urlError) throw urlError;
 
-    // Add product to database
-    await addProduct({
-      name,
-      price,
-      category,
-      image: publicUrl
-    });
+      // Add product to database
+      await addProduct({
+        name,
+        price,
+        category,
+        image: publicUrl
+      });
 
-    form.reset();
-    loadProducts();
+      form.reset();
+      loadProducts();
+    } catch(err) {
+      alert("Error: " + err.message);
+      console.error(err);
+    }
   });
-
 });
