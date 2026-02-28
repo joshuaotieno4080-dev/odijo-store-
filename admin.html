@@ -2,29 +2,47 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Panel</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="supabase.js" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Odijo Enterprise</title>
+  <link rel="stylesheet" href="admin.css">
+  <script src="admin.js" defer></script>
 </head>
 <body>
-  <h1>Admin Panel — Odijo Enterprise</h1>
-  <form id="login-form">
-    <input type="password" id="password" placeholder="Enter Admin Password">
-    <button type="submit">Login</button>
-  </form>
 
-  <div id="admin-section" style="display:none;">
-    <h2>Welcome, Geoddfrey Odijo</h2>
-    <form id="add-product-form">
-      <input type="text" id="product-name" placeholder="Product Name" required>
-      <input type="text" id="product-price" placeholder="Price" required>
-      <input type="text" id="product-category" placeholder="Category" required>
-      <input type="text" id="product-image" placeholder="Image URL" required>
-      <button type="submit">Add Product</button>
+  <!-- Login Section -->
+  <div class="login-container" id="login-container">
+    <h2>Admin Login</h2>
+    <form id="login-form">
+      <input type="password" id="password" placeholder="Enter Admin Password" required>
+      <button type="submit">Login</button>
     </form>
-
-    <h3>Delete Product</h3>
-    <div id="delete-list"></div>
   </div>
+
+  <!-- Dashboard Section -->
+  <div class="dashboard" id="admin-section" style="display:none;">
+
+    <header>
+      <h1>Odijo Enterprise Admin Panel</h1>
+      <button onclick="logout()">Logout</button>
+    </header>
+
+    <section class="add-product">
+      <h2>Add New Product</h2>
+      <form id="add-product-form">
+        <input type="text" id="product-name" placeholder="Product Name" required>
+        <input type="number" id="product-price" placeholder="Price (Ksh)" required>
+        <input type="text" id="product-category" placeholder="Category (Clothes/Shoes/Food)" required>
+        <input type="text" id="product-image" placeholder="Image URL" required>
+        <button type="submit">Add Product</button>
+      </form>
+    </section>
+
+    <section class="product-list">
+      <h2>All Products</h2>
+      <div id="product-container"></div>
+    </section>
+
+  </div>
+
 </body>
 </html>
