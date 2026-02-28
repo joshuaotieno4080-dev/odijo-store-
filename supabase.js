@@ -1,10 +1,17 @@
+// supabase.js
 const { createClient } = supabase;
+
+// Replace with your Supabase project details
 const supabaseUrl = "https://hncxmcpsiocoidljoayq.supabase.co";
 const supabaseKey = "sb_publishable__I-5Xru31gg0n-4MSbpOjA_yLmbrqwG";
+
 const db = createClient(supabaseUrl, supabaseKey);
 
 async function fetchProducts() {
-  const { data, error } = await db.from("products").select("*").order("id", { ascending: false });
+  const { data, error } = await db
+    .from("products")
+    .select("*")
+    .order("id", { ascending: false });
   if (error) console.error(error);
   return data || [];
 }
